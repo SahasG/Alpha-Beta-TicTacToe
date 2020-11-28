@@ -2,14 +2,14 @@ import random
 import copy
 
 class TicTacToePlayer:
-    """ An object representation for an AI game player for the game Teeko2.
+    """ An object representation for an AI game player for the game TicTacToe.
     """
     board = [[' ' for j in range(3)] for i in range(3)]
     pieces = ['x', 'o']
 
     def __init__(self):
-        """ Initializes a Teeko2Player object by randomly selecting red or black as its
-        piece color.
+        """ Initializes a TicTacToePlayer object by randomly selecting x or o as its
+        piece.
         """
         self.my_piece = random.choice(self.pieces)
         self.opp = self.pieces[0] if self.my_piece == self.pieces[1] else self.pieces[1]
@@ -55,38 +55,22 @@ class TicTacToePlayer:
             return beta
     
     def make_move(self, state):
-        """ Selects a (row, col) space for the next move. You may assume that whenever
-        this function is called, it is this player's turn to move.
+        """ Selects a (row, col) space for the next move. Whenever
+        this function is called, it is A.I's turn.
 
         Args:
-            state (list of lists): should be the current state of the game as saved in
-                this Teeko2Player object. Note that this is NOT assumed to be a copy of
-                the game state and should NOT be modified within this method (use
-                place_piece() instead). Any modifications (e.g. to generate successors)
-                should be done on a deep copy of the state.
-
-                In the "drop phase", the state will contain less than 8 elements which
-                are not ' ' (a single space character).
+            state (list of lists): Takes in the current board state in order to figure out the optimal successor
 
         Return:
-            move (list): a list of move tuples such that its format is
-                    [(row, col), (source_row, source_col)]
-                where the (row, col) tuple is the location to place a piece and the
-                optional (source_row, source_col) tuple contains the location of the
-                piece the AI plans to relocate (for moves after the drop phase). In
-                the drop phase, this list should contain ONLY THE FIRST tuple.
+            move (list): a list of move tuples such that its format is (row, col)
+                where the (row, col) tuple is the location to place a piece.
 
-        Note that without drop phase behavior, the AI will just keep placing new markers
-            and will eventually take over the board. This is not a valid strategy and
-            will earn you no points.
         """
 
         
         move = []
         
-        
-        # select an unoccupied space randomly
-        # TODO: implement a minimax algorithm to play better
+        #Usage of Minimax ALgorithm
         max_alpha = float('-inf')
         best_move = []
         successors = self.succ(state)
@@ -111,15 +95,10 @@ class TicTacToePlayer:
     
     def opponent_move(self, move):
         """ Validates the opponent's next move against the internal board representation.
-        You don't need to touch this code.
 
         Args:
-            move (list): a list of move tuples such that its format is
-                    [(row, col), (source_row, source_col)]
-                where the (row, col) tuple is the location to place a piece and the
-                optional (source_row, source_col) tuple contains the location of the
-                piece the AI plans to relocate (for moves after the drop phase). In
-                the drop phase, this list should contain ONLY THE FIRST tuple.
+            move (list): a list of move tuples such that its format is (row, col)
+                where the (row, col) tuple is the location to place a piece.
         """
         
         if self.board[move[0][0]][move[0][1]] != ' ':
@@ -131,16 +110,12 @@ class TicTacToePlayer:
         """ Modifies the board representation using the specified move and piece
 
         Args:
-            move (list): a list of move tuples such that its format is
-                    [(row, col), (source_row, source_col)]
-                where the (row, col) tuple is the location to place a piece and the
-                optional (source_row, source_col) tuple contains the location of the
-                piece the AI plans to relocate (for moves after the drop phase). In
-                the drop phase, this list should contain ONLY THE FIRST tuple.
+            move (list): a list of move tuples such that its format is (row, col)
+                where the (row, col) tuple is the location to place a piece.
 
                 This argument is assumed to have been validated before this method
                 is called.
-            piece (str): the piece ('b' or 'r') to place on the board
+            piece (str): the piece ('x' or 'o') to place on the board
         """
         
         self.board[move[0][0]][move[0][1]] = piece
@@ -158,13 +133,11 @@ class TicTacToePlayer:
         """ Checks the current board status for a win condition
 
         Args:
-        state (list of lists): either the current state of the game as saved in
-            this Teeko2Player object, or a generated successor state.
+        state (list of lists): either the current state of the game or a generated successor state.
 
         Returns:
-            int: 1 if this Teeko2Player wins, -1 if the opponent wins, 0 if no winner
+            int: 1 if this A.I wins, -1 if the opponent wins, 0 if no winner
 
-        TODO: complete checks for diagonal and diamond wins
         """
         # check horizontal wins
         for row in state:
@@ -235,12 +208,10 @@ class TicTacToePlayer:
 #
 ############################################################################
 def main():
-    print('Hello, this is Samaritan')
     ai = TicTacToePlayer()
     piece_count = 0
     turn = 0
 
-    # drop phase
     while piece_count < 9 and ai.game_value(ai.board) == 0:
 
         # get the player or AI's move
@@ -264,12 +235,9 @@ def main():
                 except Exception as e:
                     print(e)
 
-        # update the game variables
         piece_count += 1
         turn += 1
         turn %= 2
-
-    
 
     ai.print_board()
     if ai.game_value(ai.board) == 1:
