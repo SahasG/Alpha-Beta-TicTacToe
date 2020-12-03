@@ -30,7 +30,7 @@ class TicTacToePlayer:
         if(self.game_value(state) == -1):
             return self.game_value(state) - (1 - (depth/3))
         else:
-            if(depth == 1):
+            if(depth == 5):
                 return self.heuristic_game_value(state)
             else:
                 for s in self.succ(state):
@@ -45,7 +45,7 @@ class TicTacToePlayer:
         if(self.game_value(state) == -1):
             return self.game_value(state) - (1 - (depth/3))
         else:
-            if(depth == 1):
+            if(depth == 5):
                 return self.heuristic_game_value(state)
             else:
                 for s in self.succ(state):
